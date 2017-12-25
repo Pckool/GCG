@@ -1,0 +1,13 @@
+GCG 1.20 Changelog
+Additions:
+- Added multi grab functionality
+- Added Twitter integration
+	- Post codes to twitter with a click of a button
+- Added a Debug console
+	- This will allow you to see what you (or I) did wrong.
+Changes:
+- Changed the compiler (Easier to move around and distribute to new platforms)
+- New UI
+
+Fixes:
+- A lot.

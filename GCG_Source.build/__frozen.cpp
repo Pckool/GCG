@@ -1,0 +1,211 @@
+// This provides the frozen (compiled bytecode) files that are included if
+// any.
+#include <Python.h>
+
+#include "nuitka/constants_blob.h"
+
+// Blob from which modules are unstreamed.
+#define stream_data constant_bin
+
+// These modules should be loaded as bytecode. They may e.g. have to be loadable
+// during "Py_Initialize" already, or for irrelevance, they are only included
+// in this un-optimized form. These are not compiled by Nuitka, and therefore
+// are not accelerated at all, merely bundled with the binary or module, so
+// that CPython library can start out finding them.
+
+struct frozen_desc {
+    char const *name;
+    ssize_t start;
+    int size;
+};
+
+void copyFrozenModulesTo( struct _frozen *destination )
+{
+    struct frozen_desc frozen_modules[] = {
+        { "_bootlocale", 8791005, 1056 },
+        { "_collections_abc", 8792061, 29828 },
+        { "_compression", 8821889, 4461 },
+        { "_weakrefset", 8826350, 8433 },
+        { "abc", 8834783, 7877 },
+        { "ast", 8842660, 12307 },
+        { "base64", 8854967, 18450 },
+        { "bz2", 8873417, 11800 },
+        { "codecs", 8885217, 35315 },
+        { "collections", 8920532, -48719 },
+        { "collections.abc", 8792061, 29828 },
+        { "copyreg", 8969251, 4564 },
+        { "dis", 8973815, 14797 },
+        { "encodings", 8988612, -3861 },
+        { "encodings.aliases", 8992473, 7577 },
+        { "encodings.ascii", 9000050, 2021 },
+        { "encodings.base64_codec", 9002071, 2581 },
+        { "encodings.big5", 9004652, 1579 },
+        { "encodings.big5hkscs", 9006231, 1589 },
+        { "encodings.bz2_codec", 9007820, 3491 },
+        { "encodings.charmap", 9011311, 3103 },
+        { "encodings.cp037", 9014414, 2558 },
+        { "encodings.cp1006", 9016972, 2634 },
+        { "encodings.cp1026", 9019606, 2562 },
+        { "encodings.cp1125", 9022168, 7579 },
+        { "encodings.cp1140", 9029747, 2548 },
+        { "encodings.cp1250", 9032295, 2585 },
+        { "encodings.cp1251", 9034880, 2582 },
+        { "encodings.cp1252", 9037462, 2585 },
+        { "encodings.cp1253", 9040047, 2598 },
+        { "encodings.cp1254", 9042645, 2587 },
+        { "encodings.cp1255", 9045232, 2606 },
+        { "encodings.cp1256", 9047838, 2584 },
+        { "encodings.cp1257", 9050422, 2592 },
+        { "encodings.cp1258", 9053014, 2590 },
+        { "encodings.cp273", 9055604, 2544 },
+        { "encodings.cp424", 9058148, 2588 },
+        { "encodings.cp437", 9060736, 7396 },
+        { "encodings.cp500", 9068132, 2558 },
+        { "encodings.cp65001", 9070690, 1811 },
+        { "encodings.cp720", 9072501, 2655 },
+        { "encodings.cp737", 9075156, 7624 },
+        { "encodings.cp775", 9082780, 7410 },
+        { "encodings.cp850", 9090190, 7143 },
+        { "encodings.cp852", 9097333, 7412 },
+        { "encodings.cp855", 9104745, 7593 },
+        { "encodings.cp856", 9112338, 2620 },
+        { "encodings.cp857", 9114958, 7128 },
+        { "encodings.cp858", 9122086, 7113 },
+        { "encodings.cp860", 9129199, 7379 },
+        { "encodings.cp861", 9136578, 7390 },
+        { "encodings.cp862", 9143968, 7525 },
+        { "encodings.cp863", 9151493, 7390 },
+        { "encodings.cp864", 9158883, 7520 },
+        { "encodings.cp865", 9166403, 7390 },
+        { "encodings.cp866", 9173793, 7625 },
+        { "encodings.cp869", 9181418, 7437 },
+        { "encodings.cp874", 9188855, 2686 },
+        { "encodings.cp875", 9191541, 2555 },
+        { "encodings.cp932", 9194096, 1581 },
+        { "encodings.cp949", 9195677, 1581 },
+        { "encodings.cp950", 9197258, 1581 },
+        { "encodings.euc_jis_2004", 9198839, 1595 },
+        { "encodings.euc_jisx0213", 9200434, 1595 },
+        { "encodings.euc_jp", 9202029, 1583 },
+        { "encodings.euc_kr", 9203612, 1583 },
+        { "encodings.gb18030", 9205195, 1585 },
+        { "encodings.gb2312", 9206780, 1583 },
+        { "encodings.gbk", 9208363, 1577 },
+        { "encodings.hex_codec", 9209940, 2568 },
+        { "encodings.hp_roman8", 9212508, 2759 },
+        { "encodings.hz", 9215267, 1575 },
+        { "encodings.idna", 9216842, 6471 },
+        { "encodings.iso2022_jp", 9223313, 1596 },
+        { "encodings.iso2022_jp_1", 9224909, 1600 },
+        { "encodings.iso2022_jp_2", 9226509, 1600 },
+        { "encodings.iso2022_jp_2004", 9228109, 1606 },
+        { "encodings.iso2022_jp_3", 9229715, 1600 },
+        { "encodings.iso2022_jp_ext", 9231315, 1604 },
+        { "encodings.iso2022_kr", 9232919, 1596 },
+        { "encodings.iso8859_1", 9234515, 2557 },
+        { "encodings.iso8859_10", 9237072, 2562 },
+        { "encodings.iso8859_11", 9239634, 2656 },
+        { "encodings.iso8859_13", 9242290, 2565 },
+        { "encodings.iso8859_14", 9244855, 2583 },
+        { "encodings.iso8859_15", 9247438, 2562 },
+        { "encodings.iso8859_16", 9250000, 2564 },
+        { "encodings.iso8859_2", 9252564, 2557 },
+        { "encodings.iso8859_3", 9255121, 2564 },
+        { "encodings.iso8859_4", 9257685, 2557 },
+        { "encodings.iso8859_5", 9260242, 2558 },
+        { "encodings.iso8859_6", 9262800, 2602 },
+        { "encodings.iso8859_7", 9265402, 2565 },
+        { "encodings.iso8859_8", 9267967, 2596 },
+        { "encodings.iso8859_9", 9270563, 2557 },
+        { "encodings.johab", 9273120, 1581 },
+        { "encodings.koi8_r", 9274701, 2609 },
+        { "encodings.koi8_t", 9277310, 2520 },
+        { "encodings.koi8_u", 9279830, 2595 },
+        { "encodings.kz1048", 9282425, 2572 },
+        { "encodings.latin_1", 9284997, 2033 },
+        { "encodings.mac_arabic", 9287030, 7296 },
+        { "encodings.mac_centeuro", 9294326, 2596 },
+        { "encodings.mac_croatian", 9296922, 2604 },
+        { "encodings.mac_cyrillic", 9299526, 2594 },
+        { "encodings.mac_farsi", 9302120, 2538 },
+        { "encodings.mac_greek", 9304658, 2578 },
+        { "encodings.mac_iceland", 9307236, 2597 },
+        { "encodings.mac_latin2", 9309833, 2738 },
+        { "encodings.mac_roman", 9312571, 2595 },
+        { "encodings.mac_romanian", 9315166, 2605 },
+        { "encodings.mac_turkish", 9317771, 2598 },
+        { "encodings.mbcs", 9320369, 1802 },
+        { "encodings.palmos", 9322171, 2585 },
+        { "encodings.ptcp154", 9324756, 2679 },
+        { "encodings.punycode", 9327435, 7086 },
+        { "encodings.quopri_codec", 9334521, 2613 },
+        { "encodings.raw_unicode_escape", 9337134, 1889 },
+        { "encodings.rot_13", 9339023, 3105 },
+        { "encodings.shift_jis", 9342128, 1589 },
+        { "encodings.shift_jis_2004", 9343717, 1599 },
+        { "encodings.shift_jisx0213", 9345316, 1599 },
+        { "encodings.tis_620", 9346915, 2647 },
+        { "encodings.undefined", 9349562, 2281 },
+        { "encodings.unicode_escape", 9351843, 1869 },
+        { "encodings.unicode_internal", 9353712, 1879 },
+        { "encodings.utf_16", 9355591, 5253 },
+        { "encodings.utf_16_be", 9360844, 1741 },
+        { "encodings.utf_16_le", 9362585, 1741 },
+        { "encodings.utf_32", 9364326, 5146 },
+        { "encodings.utf_32_be", 9369472, 1634 },
+        { "encodings.utf_32_le", 9371106, 1634 },
+        { "encodings.utf_7", 9372740, 1662 },
+        { "encodings.utf_8", 9374402, 1721 },
+        { "encodings.utf_8_sig", 9376123, 4853 },
+        { "encodings.uu_codec", 9380976, 3472 },
+        { "encodings.zlib_codec", 9384448, 3333 },
+        { "enum", 9387781, 16579 },
+        { "functools", 9404360, 23596 },
+        { "genericpath", 9427956, 3944 },
+        { "heapq", 9431900, 15054 },
+        { "importlib", 9446954, -3914 },
+        { "importlib._bootstrap", 9450868, 31755 },
+        { "importlib._bootstrap_external", 9482623, 41881 },
+        { "importlib.machinery", 9524504, 1035 },
+        { "inspect", 9525539, 84838 },
+        { "io", 9610377, 3470 },
+        { "keyword", 9613847, 1952 },
+        { "linecache", 9615799, 4089 },
+        { "locale", 9619888, 36540 },
+        { "ntpath", 9656428, 14826 },
+        { "opcode", 9671254, 5714 },
+        { "operator", 9676968, 14801 },
+        { "os", 9691769, 31304 },
+        { "quopri", 9723073, 6413 },
+        { "re", 9729486, 14464 },
+        { "reprlib", 9743950, 5971 },
+        { "sre_compile", 9749921, 10932 },
+        { "sre_constants", 9760853, 6332 },
+        { "sre_parse", 9767185, 22439 },
+        { "stat", 9789624, 4174 },
+        { "stringprep", 9793798, 12996 },
+        { "struct", 9806794, 359 },
+        { "threading", 9807153, 39092 },
+        { "token", 9846245, 3685 },
+        { "tokenize", 9849930, 20473 },
+        { "traceback", 9870403, 20143 },
+        { "types", 9890546, 8752 },
+        { "warnings", 9899298, 13057 },
+        { "weakref", 9912355, 20678 },
+        { NULL, 0, 0 }
+    };
+
+    struct frozen_desc *current = frozen_modules;
+
+    for(;;)
+    {
+        destination->name = (char *)current->name;
+        destination->code = (unsigned char *)&constant_bin[ current->start ];
+        destination->size = current->size;
+
+        if (destination->name == NULL) break;
+
+        current += 1;
+        destination += 1;
+    };
+}

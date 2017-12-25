@@ -1,0 +1,46 @@
+    def oauth_req(self, url, consumer_api, consumer_secret, http_method="GET"):
+        # 1
+        print('1')
+        access_token_url = 'https://api.twitter.com/oauth/access_token'
+        authorize_url = 'https://api.twitter.com/oauth/authorize'
+
+        # consumer = oauth2.Consumer(key=consumer_api, secret=consumer_secret)
+        # client = oauth2.Client(consumer)
+        auth = tweepy.OAuthHandler(consumer_api, consumer_secret)
+
+        print('\tAbout to pull data.')
+        try:
+            redirect_url = auth.get_authorization_url()
+            print('\tpulled data.')
+        except tweepy.TweepError:
+            print('Error! Failed to get request token.')
+        redirect_url = auth.get_authorization_url()
+        # resp, content = client.request(url, method=http_method)
+        # print(resp)
+        # if resp['status'] != '200':
+        #    raise Exception("Invalid response %s." % resp['status'])
+
+        #content = str(content).replace("b\'", "\'")
+        #content = content.replace("\'", "")
+
+        # 2
+        print('2')
+        # request_token = dict(parseurl.parse_qsl(content))
+        webbrowser.open(redirect_url, new=2)
+        # webbrowser.open("%s?oauth_token=%s" % (authorize_url, request_token['oauth_token']), new=2)
+
+        oauth_verifier = self.doit()
+
+        # 3
+        print('3')
+        if len(oauth_verifier) == 7:
+            token = oauth2.Token(request_token['oauth_token'], request_token['oauth_token_secret'])
+            token.set_verifier(oauth_verifier)
+            client = oauth2.Client(consumer, token)
+
+            resp, content = client.request(access_token_url, "POST")
+            content = str(content).replace("b\'", "\'")
+            content = content.replace("\'", "")
+            self.access_token = dict(parseurl.parse_qsl(content))
+        else:
+            print('Twitter connection failed.')
